@@ -2,7 +2,7 @@ const express = require("express")
 
 
 const userRoute = express.Router()
-const { createUser , deleteUser  , getSingleUser , updateUser, getAllUsers }
+const {loginUser, createUser , deleteUser  , getSingleUser , updateUser, getAllUsers }
  = require("../controller/userController")
 
 userRoute.post("/new-user", createUser)
