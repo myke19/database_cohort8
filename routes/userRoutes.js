@@ -10,7 +10,7 @@ userRoute.get("/all-users", getAllUsers)
 userRoute.get("/get-one-user/:id", getSingleUser)
 userRoute.delete("/delete-user/:userId", deleteUser)
 userRoute.patch("/update-user/:userId", updateUser)
-userRoute.get("/login", longinUser)
+userRoute.get("/login", loginUser)
 
 
 module.exports = userRoute
