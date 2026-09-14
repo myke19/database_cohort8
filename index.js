@@ -1,13 +1,12 @@
+//import "dotenv/config"
 const dotenv = require("dotenv").config();
 const express = require("express")
 const mongoose = require('mongoose');
 const userRoute = require("./routes/userRoutes.js")
 const productRoute = require("./routes/productRoutes.js");
+const compass_string = process.env.COMPASS_STRING
+const atlas_string = process.env.ATLAS_STRING
 
-const mongodbconnect = process.env.MONGODB_URL;
-
-const compass_string = "mongodb://localhost:27017/cohort8_db"
-const atlas_string = "mongodb://apeyiomotobi04_db_user:benita06@ac-byl4cdr-shard-00-00.kmrpclp.mongodb.net:27017,ac-byl4cdr-shard-00-01.kmrpclp.mongodb.net:27017,ac-byl4cdr-shard-00-02.kmrpclp.mongodb.net:27017/?ssl=true&replicaSet=atlas-nnppk8-shard-0&authSource=admin&appName=Cluster0"
 
 mongoose.connect(atlas_string)
 .then(() => console.log("MongoDB Connected"))

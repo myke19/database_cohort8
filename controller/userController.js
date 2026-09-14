@@ -1,4 +1,5 @@
-const userModel = require("../model/userModel")
+const userModel = require("../model/userModel");
+const bcrypt = require("bcrypt");
 
 /**
  * CRUD
@@ -12,21 +13,48 @@ const userModel = require("../model/userModel")
  const createUser = async (req , res) => {
     try{
         const { name, email, password, regNo } = req.body
-
+        const genSalt = await bcrypt.genSalt(10)
+        const hashedPassword = bcrypt.hash(password, genSalt)
+        const user = await userModel.create({
+            name, email, password: hashedPassword, regNo
+        })
         if(!regNo) {
             return res.status(400).json({
                 message: "Please provide a registration number."
             });
         }
-        const user = await userModel.create({
-            name, email, password, regNo
-        })
-        res.status(201).json({
-            message: "User Created Successfully",
-            data : user
+        return res.status(201).json({
+            message: "User created successfully",
+            data: user
         })
     }catch(error){
         res.status(500).json({message: error.message})
+    }
+}
+
+const loginUser = async (req , res) => {
+    try{
+        const {email, password } = req.body
+        const user = await userModel.findOne({ email})
+        if (!user) {
+            return res.status(404).json({
+                message: "Are you sure you siged up?"
+            })
+        }
+        const isMatch = await bcrypt.compare(password, user.password)
+        if (!isMatch ) {
+            return res.status(404).json({
+                message: "Password is incorrect"
+            })
+        }
+        return res.status(200).json({
+            message: "Login successful",
+            data: user
+        })
+    }catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
     }
 }
 
@@ -105,4 +133,4 @@ const deleteUser = async (req , res) => {
     }
 }
 
-module.exports = { createUser , getAllUsers , getSingleUser , updateUser , deleteUser }
+module.exports = { loginUser, createUser , getAllUsers , getSingleUser , updateUser , deleteUser }
